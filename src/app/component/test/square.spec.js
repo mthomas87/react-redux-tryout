@@ -1,31 +1,41 @@
 import React from 'react';
-import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import {expect} from 'chai';
+import {shallow} from 'enzyme';
 import sinon from 'sinon';
+// import {describe, it, beforeEach} from 'mocha';
 import {Square} from '../Square';
 
-let props, squareShallow;
 
-beforeEach(() => {
-    props = {
-        onClick: () => {
-            return null;
-        },
-        value: ''
-    };
+describe('<Square />', () => {
+    let props, squareShallow, squareMount;
 
-    squareShallow = shallow(<Square {...props}/>);
-    // loginFormMount = mount(<LoginForm {...props}/>);
-});
+    beforeEach(() => {
+        props = {
+            onClick: () => {
+                return 'X';
+            },
+            value: ''
+        };
 
-it('Square component is not null', () => {
-    expect(squareShallow).to.be.not.null;
-});
+        squareShallow = shallow(<Square {...props}/>);
+        // squareMount = mount(<Square {...props}/>);
+    });
 
-it('should render with square Button', () => {
-    if (squareShallow) {
-        expect(squareShallow.containsAllMatchingElements([
-            <button className="square" />,
-        ])).to.equal(true);
-    }
+    it('Square component is not null', () => {
+        expect(squareShallow).to.be.not.null;
+    });
+
+    it('Square component contains class square', () => {
+        expect(squareShallow.prop('className')).to.equal('square');
+    });
+
+    it('simulates click events', () => {
+        const onClick = sinon.spy();
+        squareShallow.find('.square').simulate('click');
+
+        // console.log(onClick);
+
+        expect(onClick.calledOnce).to.equal(true);
+        // expect(squareShallow.text()).to.equal('X');
+    });
 });
